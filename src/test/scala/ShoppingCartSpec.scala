@@ -27,12 +27,12 @@ class ShoppingCartSpec extends AnyFlatSpec with Matchers {
   }
 
   behavior of "Shopping Cart"
-  note("Applying discounts: buy one, get one free on Apples; 3 for the price of 2 on Oranges")
+  note(f"Applying discounts: buy one, get one free on Apples (£${priceList("Apple")}%.02f); 3 for the price of 2 on Oranges (£${priceList("Orange")}%.02f)")
 
   {
     val inputs = List("Apple", "Apple", "Orange", "Apple")
 
-    val expectation = "£1.85"
+    val expectation = "£1.45"
 
     it should s"output '$expectation' for inputs `${inputs.mkString(", ")}`" in {
 
