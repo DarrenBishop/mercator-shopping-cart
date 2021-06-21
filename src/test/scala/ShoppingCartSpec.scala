@@ -8,8 +8,22 @@ class ShoppingCartSpec extends AnyFlatSpec with Matchers {
     "Orange" -> 0.25
   )
 
+  val discounts = Map(
+    "Apple" -> (2, 1),
+    "Orange" -> (3, 2)
+  )
+
+  def discount(n: Int, disc: (Int, Int)): Int = {
+    val (count, reduction) = disc
+    (n / count) * reduction + (n % count)
+  }
+
   def calculate(goods: List[String]): String = {
-    "£%.02f".format(goods.map(priceList).fold(0d)(_ + _))
+    "£%.02f".format(
+      goods
+        .groupMapReduce(identity)(_ => 1)(_ + _)
+        .map { case (product, count) => priceList(product) * discount(count, discounts(product)) }
+        .sum)
   }
 
   behavior of "Shopping Cart"
